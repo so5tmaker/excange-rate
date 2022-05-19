@@ -1,4 +1,4 @@
-# Leocode interview tech task
+# Exchange rate
 
 ## Setup
 
