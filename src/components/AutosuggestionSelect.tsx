@@ -5,6 +5,8 @@ import axios from "axios";
 import arrow from "../assets/svg/arrow.svg";
 import { useToggle } from "../hooks/useToggle";
 import { useInput } from "../hooks/useInput";
+import { getHeaderRate, getRate } from "../api/api";
+import Header from "./Header";
 
 export function AutosuggestionSelect() {
   const [isActive, toggle] = useToggle();
@@ -12,22 +14,34 @@ export function AutosuggestionSelect() {
   const nameInput = useRef(null);
 
   const [data, setData] = useState([]);
+  const [headerData, setHeaderData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       // setLoading(true);
       try {
         const { data: response } = await axios.get(
-          `https://rickandmortyapi.com/api/character?name=${character}`
+          `https://api.coingate.com/v2/rates/merchant/EUR/UAH`
+          // `https://rickandmortyapi.com/api/character?name=${character}`
         );
         setData(response);
+        console.log(response);
       } catch (error: any) {
         console.error(error.message);
       }
       // setLoading(false);
     };
-
     fetchData();
+
+    const fetchHeaderRate = async () => {
+      try {
+        const response = await getHeaderRate();
+        setHeaderData(response);
+      } catch (error: any) {
+        console.error(error.message);
+      }
+    };
+    fetchHeaderRate();
   }, [setData]);
 
   const characters = [
@@ -76,6 +90,7 @@ export function AutosuggestionSelect() {
 
   return (
     <div className='wrapper'>
+      <Header headerData={headerData} />
       <div className='select'>
         <button
           className={cn("trigger", {
@@ -83,7 +98,7 @@ export function AutosuggestionSelect() {
           })}
           onClick={() => toggle()}
         >
-          Find Rick & Morty Characters
+          Find Rick & Morty Characters {data}
           <img src={arrow} alt='chevron down icon' className='arrow' />
         </button>
         {isActive && (
