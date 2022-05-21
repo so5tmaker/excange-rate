@@ -1,22 +1,35 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Raleway:100,200,300,regular,500,600");
+@import url("https://fonts.googleapis.com/css?family=Roboto+Condensed:300,regular,italic,700");
 
 html {
   font-size: 10px;
   box-sizing: border-box;
 }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: inherit;
 }
 
 body {
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+h2 {
+  font-family: "Raleway";
+  color: #222;
+  font-size: 42px;
+  font-weight: normal;
+  line-height: 67.2px;
+  margin: 0;
 }

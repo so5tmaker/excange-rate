@@ -1,38 +1,52 @@
-import React, { useRef, useState, useEffect } from "react";
-import cn from "clsx";
-import axios from "axios";
+import { useState, useEffect } from "react";
 
-import arrow from "../assets/svg/arrow.svg";
 import { useToggle } from "../hooks/useToggle";
 import { useInput } from "../hooks/useInput";
-import { getHeaderRate, getRate } from "../api/api";
+import { getRate, getHeaderRate } from "../api/api";
 import Header from "./Header";
+import { Select } from "./Select";
 
 export function AutosuggestionSelect() {
-  const [isActive, toggle] = useToggle();
-  const [character, setInput] = useInput("");
-  const nameInput = useRef(null);
-
-  const [data, setData] = useState([]);
   const [headerData, setHeaderData] = useState([]);
+  const [isActiveFrom, toggleFrom] = useToggle();
+  const [isActiveTo, toggleTo] = useToggle();
+  const initialData = [
+    { item: "", rate: 0 },
+    { item: "", rate: 0 },
+  ];
+  const [rateData, setInput] = useInput(initialData);
+  const [rateFrom, setInputRateFrom] = useState(0);
+  const [rateTo, setInputRateTo] = useState(0);
+
+  const currencies = ["uah", "eur", "usd"];
+
+  const handleClickEvent = async (
+    item: string,
+    position: number,
+    toggleFn: any,
+    setInputFn: any
+  ) => {
+    const opposite = position === 0 ? 1 : 0;
+    const isFirstFrom = !rateData[position].item;
+    const isFirstTo = !rateData[opposite].item;
+    rateData[position].item = item;
+    // 1. приходит первый раз
+
+    // const { item: oppositeItem, rate: oppositeRate } = rateData[opposite];
+    // const positionItem = oppositeItem === "" ? item : oppositeItem;
+    // let { data: rate } = await getRate(item, positionItem);
+    // const positionRate = oppositeRate === 0 ? 1 : oppositeRate;
+    // if (oppositeItem !== "") {
+    //   rateData[opposite].rate = rate * (oppositeRate === 0 ? 1 : oppositeRate);
+    //   setInputFn(rate * (oppositeRate === 0 ? 1 : oppositeRate));
+    // } else {
+    //   rateData[position].rate = 1;
+    // }
+    setInput(rateData);
+    toggleFn();
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      // setLoading(true);
-      try {
-        const { data: response } = await axios.get(
-          `https://api.coingate.com/v2/rates/merchant/EUR/UAH`
-          // `https://rickandmortyapi.com/api/character?name=${character}`
-        );
-        setData(response);
-        console.log(response);
-      } catch (error: any) {
-        console.error(error.message);
-      }
-      // setLoading(false);
-    };
-    fetchData();
-
     const fetchHeaderRate = async () => {
       try {
         const response = await getHeaderRate();
@@ -42,76 +56,30 @@ export function AutosuggestionSelect() {
       }
     };
     fetchHeaderRate();
-  }, [setData]);
-
-  const characters = [
-    "Baby Wizard",
-    "Scroopy Noopers",
-    "Running Bird",
-    "Gotron",
-  ];
-
-  const handleClickEvent = (item: string) => {
-    const curInput: any = nameInput.current;
-    if (curInput !== null) {
-      curInput.value = item;
-    }
-  };
-
-  // const liNames1 = data.map((item) => {
-  //   let active = "";
-  //   if (character !== "") {
-  //     active = item.includes(character) ? " list__item--selected" : "";
-  //   }
-  //   return (
-  //     <li
-  //       key={item}
-  //       className={"list__item" + active}
-  //       onClick={() => handleClickEvent(item)}
-  //     ></li>
-  //   );
-  // });
-
-  const liNames = characters.map((item) => {
-    let active = "";
-    if (character !== "") {
-      active = item.includes(character) ? " list__item--selected" : "";
-    }
-    return (
-      <li
-        key={item}
-        className={"list__item" + active}
-        onClick={() => handleClickEvent(item)}
-      >
-        {item}
-      </li>
-    );
-  });
+  }, [setHeaderData]);
 
   return (
-    <div className='wrapper'>
+    <div className='wrapper center'>
       <Header headerData={headerData} />
-      <div className='select'>
-        <button
-          className={cn("trigger", {
-            ["trigger--active"]: isActive,
-          })}
-          onClick={() => toggle()}
-        >
-          Find Rick & Morty Characters {data}
-          <img src={arrow} alt='chevron down icon' className='arrow' />
-        </button>
-        {isActive && (
-          <div className='options'>
-            <input
-              className='input'
-              ref={nameInput}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder='Type to search...'
-            />
-            <ul className='list'>{liNames}</ul>
-          </div>
-        )}
+      <div className='container'>
+        <Select
+          selectData={rateData}
+          position={0}
+          isActive={isActiveFrom}
+          handleClickEvent={handleClickEvent}
+          toggle={toggleFrom}
+          setInputRate={setInputRateFrom}
+          rate={rateFrom}
+        />
+        <Select
+          selectData={rateData}
+          position={1}
+          isActive={isActiveTo}
+          handleClickEvent={handleClickEvent}
+          toggle={toggleTo}
+          setInputRate={setInputRateTo}
+          rate={rateTo}
+        />
       </div>
     </div>
   );
