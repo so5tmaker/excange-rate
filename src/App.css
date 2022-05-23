@@ -36,6 +36,10 @@ body {
   margin: 2rem;
 }
 
+.currencies {
+  height: 245px;
+}
+
 .wrapper {
   padding: 2rem;
   height: 100%;
@@ -86,12 +90,11 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  line-height: 2.8rem;
   padding: 1.2rem;
   /* font-family: "Inter", sans-serif; */
   font-size: 1.4rem;
   background-color: rgba(0, 0, 0, 0.06);
-  color: rgba(0, 0, 0, 0.87);
+  color: rgba(142, 142, 142, 1);
   border: none;
   outline: none;
   height: 40px;

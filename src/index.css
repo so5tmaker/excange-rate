@@ -7,6 +7,10 @@ html {
   box-sizing: border-box;
 }
 
+#root {
+  height: 100%;
+}
+
 *,
 *:before,
 *:after {

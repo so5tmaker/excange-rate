@@ -1,61 +1,59 @@
-import { useInput } from "../hooks/useInput";
-
 export function Select({
-  selectData,
-  position,
-  isActive,
-  handleClickEvent,
-  toggle,
-  setInputRate,
-  rate,
+  selPosition,
+  selRate,
+  selCurrency,
+  selToggle,
+  selOnClick,
+  selOnChange,
+  selIsActive,
 }: {
-  selectData: any;
-  position: number;
-  isActive: boolean;
-  handleClickEvent: any;
-  toggle: any;
-  setInputRate: any;
-  rate: number;
+  selPosition: number;
+  selRate: number;
+  selCurrency: string;
+  selToggle: any;
+  selOnClick: any;
+  selOnChange: any;
+  selIsActive: boolean;
 }) {
-  // const [isActive, toggle] = useToggle();
-  const [currency, setInput] = useInput("");
   const currencies = ["uah", "eur", "usd"];
 
-  const liNames = currencies.map((item) => {
-    let active = "";
-    if (currency !== "") {
-      active = item.includes(currency) ? " list__item--selected" : "";
-    }
-    return (
-      <li
-        key={item}
-        className={"list__item" + active}
-        onClick={() => handleClickEvent(item, position, toggle, setInputRate)}
-      >
-        {item}
-      </li>
-    );
-  });
+  const liNames = (position: number, toggle: any, currency: string) =>
+    currencies.map((item) => {
+      let active = "";
+      if (currency !== "") {
+        active = item.includes(currency) ? " list__item--selected" : "";
+      }
+      return (
+        <li
+          key={item}
+          className={"list__item" + active}
+          onClick={() => selOnClick(item, position, toggle)}
+        >
+          {item}
+        </li>
+      );
+    });
 
   return (
-    <div className='select'>
-      <input
-        className='input-rate'
-        value={rate}
-        onChange={(e) => setInputRate(e.target.value)}
-        // placeholder='Click to choose...'
-        onClick={() => toggle()}
-      />
-      <div className='options'>
+    <>
+      <div className='select currencies'>
         <input
-          value={selectData[position].item}
-          className='input'
-          onChange={(e) => setInput(e.target.value)}
-          placeholder='Click to choose...'
-          onClick={() => toggle()}
+          className='input-rate'
+          value={selRate}
+          onChange={(e) => selOnChange(e.target.value, selPosition)}
+          onClick={() => selToggle(false)}
         />
-        {isActive && <ul className='list'>{liNames}</ul>}
+        <div className='options'>
+          <div className='input' onClick={() => selToggle()}>
+            {!selCurrency ? "Натисніть, щоб вибрати..." : selCurrency}
+          </div>
+          {selIsActive && (
+            <ul className='list'>
+              {liNames(selPosition, selToggle, selCurrency)}
+            </ul>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

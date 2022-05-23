@@ -4,7 +4,7 @@ type typeHeader = {
   usd: number;
   eur: number;
 };
-
+// https://exchangeratesapi.io/
 const instance = axios.create({
   baseURL: "https://api.coingate.com/v2/rates/merchant/",
 });

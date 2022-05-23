@@ -1,8 +1,8 @@
 import * as React from "react";
-import { AutosuggestionSelect } from "./components/AutosuggestionSelect";
+import { Main } from "./components/Main";
 
 import "./App.css";
 
 export default function App() {
-  return <AutosuggestionSelect />;
+  return <Main />;
 }

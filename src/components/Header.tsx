@@ -1,13 +1,20 @@
 import React from "react";
 
 function Header({ headerData }: { headerData: any }) {
-  return (
-    <>
-      <h2>Ukrainian hryvnia</h2>
-      <div className='header'>
+  const divRates =
+    headerData.length === 0 ? (
+      <div className='select'>Завантаження курсів...</div>
+    ) : (
+      <>
         <div className='select'>{`USD ${headerData[0]}`}</div>
         <div className='select'>{`EUR ${headerData[1]}`}</div>
-      </div>
+      </>
+    );
+
+  return (
+    <>
+      <h2>Українська гривня</h2>
+      <div className='header'>{divRates}</div>
     </>
   );
 }
